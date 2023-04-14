@@ -41,3 +41,17 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3001:3001'
+
+  database:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_PASSWORD=user
+      - POSTGRES_USER=user
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
