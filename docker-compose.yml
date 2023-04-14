@@ -1,0 +1,43 @@
+services:
+  orders:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: ./servers/apps/orders/Dockerfile
+      target: development
+    command: npm run start:dev orders
+    env_file:
+      - ./servers/apps/orders/.env
+    # depends_on:
+    #   - mongodb-primary
+    #   - mongodb-secondary
+    #   - mongodb-arbiter
+    #   - billing
+    #   - auth
+    #   - rabbitmq
+    volumes:
+      - ./servers:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+
+  billing:
+    build:
+      context: .
+      dockerfile: ./servers/apps/billings/Dockerfile
+      target: development
+    command: npm run start:dev billings
+    env_file:
+      - ./servers/apps/billings/.env
+    # depends_on:
+    #   - mongodb-primary
+    #   - mongodb-secondary
+    #   - mongodb-arbiter
+    #   - rabbitmq
+    #   - auth
+    volumes:
+      - ./servers:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3001:3001'
